@@ -1,4 +1,4 @@
-package no.hvl.dat250.rest.todos;
+package no.hvl.dat250.rest.todos.model;
 
 import java.util.Objects;
 
@@ -6,9 +6,6 @@ public class Todo {
     private Long id;
     private String summary;
     private String description;
-
-    public Todo() {
-    }
 
     public Todo(Long id, String summary, String description) {
         this.id = id;
