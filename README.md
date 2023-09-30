@@ -1,5 +1,7 @@
 # dat250-spring-counter-todos
 
+test
+
 The test suite (**TodoControllerTest**) should run after your implementation (see badge below). You are not allowed to change the test class!
 
 [![TodoControllerTest](../../actions/workflows/main.yml/badge.svg)](../../actions/workflows/main.yml)
