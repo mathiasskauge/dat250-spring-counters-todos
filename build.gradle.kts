@@ -15,7 +15,6 @@ repositories {
 }
 
 dependencies {
-    api("org.springframework.boot:spring-boot-starter-data-jpa:3.1.0")
     api("org.springframework.boot:spring-boot-starter-web:3.1.0")
     api("com.google.code.gson:gson:2.9.0")
     api("com.squareup.okhttp3:okhttp:4.11.0")

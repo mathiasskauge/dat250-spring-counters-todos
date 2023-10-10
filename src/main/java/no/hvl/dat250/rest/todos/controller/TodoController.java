@@ -1,10 +1,12 @@
 package no.hvl.dat250.rest.todos.controller;
 import no.hvl.dat250.rest.todos.model.Todo;
-import no.hvl.dat250.rest.todos.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,56 +16,64 @@ import java.util.List;
 @RestController
 public class TodoController {
 
+  private List<Todo> todoList = new ArrayList<>();
+
+
   public static final String TODO_WITH_THE_ID_X_NOT_FOUND = "Todo with the id %s not found!";
 
-  @Autowired
-  private TodoRepository todoRepository;
-
   // Create a new Todo
-  @PostMapping
+  @PostMapping("/todos")
   public Todo createTodo(@RequestBody Todo todo) {
-    return todoRepository.save(todo);
+    if (todo.getId() == null) {
+      todo.setId((long) (todoList.size() + 1));
+    }
+    todoList.add(todo);
+    return todo;
   }
 
   // Retrieve all Todos
   @GetMapping
   public List<Todo> getAllTodos() {
-    return todoRepository.findAll();
+    return todoList;
   }
 
   // Retrieve a specific Todo by ID
-  @GetMapping("/{id}")
-  public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
-    Todo todo = todoRepository.findById(id).orElse(null);
-    if (todo != null) {
-      return ResponseEntity.ok(todo);
-    } else {
-      return ResponseEntity.notFound().build();
+  @GetMapping("/todos/{id}")
+  public Object getTodoById(@PathVariable Long id) {
+    for (Todo todo : todoList) {
+      if (todo.getId().equals(id)) {
+        return todo;
+      }
     }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(TODO_WITH_THE_ID_X_NOT_FOUND, id));
   }
 
   // Update an existing Todo
-  @PutMapping("/{id}")
-  public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody Todo updatedTodo) {
-    Todo todo = todoRepository.findById(id).orElse(null);
-    if (todo != null) {
-      todo.setSummary(updatedTodo.getSummary());
-      todo.setDescription(updatedTodo.getDescription());
-      return ResponseEntity.ok(todoRepository.save(todo));
-    } else {
-      return ResponseEntity.notFound().build();
+  @PutMapping("/todos/{id}")
+  public Object updateTodoById(@PathVariable Long id, @RequestBody Todo newTodo) {
+    todoList = getAllTodos();
+    for (Todo todo : todoList) {
+      if (todo.getId().equals(id)) {
+        todo.setSummary(newTodo.getSummary());
+        todo.setDescription(newTodo.getDescription());
+        return todo;
+      }
     }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(TODO_WITH_THE_ID_X_NOT_FOUND, id));
   }
 
   // Delete a Todo by ID
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
-    Todo todo = todoRepository.findById(id).orElse(null);
-    if (todo != null) {
-      todoRepository.delete(todo);
-      return ResponseEntity.noContent().build();
-    } else {
-      return ResponseEntity.notFound().build();
+  @DeleteMapping("/todos/{id}")
+  public Object deleteTodoById(@PathVariable Long id) {
+    todoList = getAllTodos();
+    for (Todo todo : todoList) {
+      if (todo.getId().equals(id)) {
+        todoList.remove(todo);
+        return todoList;
+      }
     }
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(TODO_WITH_THE_ID_X_NOT_FOUND, id));
   }
+
 }
+
