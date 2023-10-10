@@ -1,11 +1,15 @@
-package no.hvl.dat250.rest.todos.model;
+package no.hvl.dat250.rest.todos;
 
 import java.util.Objects;
 
 public class Todo {
+
     private Long id;
     private String summary;
     private String description;
+
+    public Todo() {
+    }
 
     public Todo(Long id, String summary, String description) {
         this.id = id;
@@ -56,9 +60,10 @@ public class Todo {
     @Override
     public String toString() {
         return "Todo{" +
-            "id=" + id +
-            ", summary='" + summary + '\'' +
-            ", description='" + description + '\'' +
-            '}';
+                "id=" + id +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
+
