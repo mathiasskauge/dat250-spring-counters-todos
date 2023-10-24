@@ -3,45 +3,38 @@ package no.hvl.dat250.rest.todos;
 import java.util.Objects;
 
 public class Todo {
-
     private Long id;
     private String summary;
     private String description;
 
-    public Todo() {
-    }
-
     public Todo(Long id, String summary, String description) {
+        super();
         this.id = id;
         this.summary = summary;
         this.description = description;
     }
-
     public Todo(String summary, String description) {
         this(null, summary, description);
     }
-    public Long getId() {
-        return id;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+    public Todo() {}
 
     public void setId(Long id) {
         this.id = id;
     }
-
+    public Long getId() {
+        return id;
+    }
     public void setSummary(String summary) {
         this.summary = summary;
     }
-
+    public String getSummary() {
+        return summary;
+    }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getDescription() {
+        return description;
     }
 
     @Override
